@@ -11,7 +11,9 @@ import { defineConfig } from 'vite'
 import { fileURLToPath, URL } from 'node:url'
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(
+  {
+    transpileDependencies: true,
   plugins: [
     VueRouter(),
     Layouts(),

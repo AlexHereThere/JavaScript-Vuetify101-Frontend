@@ -211,7 +211,13 @@
 
     methods: {
       async initialize () {
-        const acts =  await fetch("https://localhost:4000/activo/all");
+        const tokenBE = sessionStorage.getItem('backend_token');
+        const acts =  await fetch("https://localhost:4000/api/activo/all",
+          {
+            method:'GET',
+            headers:{'Authorization':`Bearer ${tokenBE}`}//asegurar que sea usuario autenticado el que pide ver activos
+          }
+        );
         this.activos = await acts.json();
       },
 
@@ -229,9 +235,11 @@
       },
 
       async deleteItemConfirm () {
-          this.res = await fetch("https://localhost:4000/activo/id/"+this.editedItem.id,
+        const tokenBE = sessionStorage.getItem('backend_token');
+          this.res = await fetch("https://localhost:4000/api/activo/id/"+this.editedItem.id,
           {
             method:"DELETE",
+            headers:{'Authorization':`Bearer ${tokenBE}`},//asegurar que sea usuario autenticado
             credentials: "include", //modificar base de datos con cambios
           });
         this.initialize()
@@ -255,23 +263,30 @@
       },
 
       async save () {
+        const tokenBE = sessionStorage.getItem('backend_token');
         if(this.itsEdit) //si es edicion, se usa PATCH si no, se usa POST.
         {
-          this.res = await fetch("https://localhost:4000/activo/id/"+this.editedItem.id,
-          {
+          this.res = await fetch("https://localhost:4000/api/activo/id/"+this.editedItem.id,
+          {//asegurar que sea usuario autenticado
             method:"PATCH",
             credentials: "include", //modificar base de datos con cambios
-            headers:{'Content-Type':'application/json'},
+            headers:{
+              'Content-Type':'application/json',
+              'Authorization':`Bearer ${tokenBE}`
+            },
             body:JSON.stringify(this.editedItem)
           });
         }
         else
         {
-          this.res = await fetch("https://localhost:4000/activo",
-          {
+          this.res = await fetch("https://localhost:4000/api/activo",
+          {//asegurar que sea usuario autenticado
             method:"POST",
             credentials: "include", //modificar base de datos con cambios
-            headers:{'Content-Type':'application/json'},
+            headers:{
+              'Content-Type':'application/json',
+              'Authorization':`Bearer ${tokenBE}`
+            },
             body:JSON.stringify(this.editedItem)
           });
         }

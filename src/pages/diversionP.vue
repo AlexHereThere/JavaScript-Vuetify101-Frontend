@@ -35,7 +35,6 @@
     import {ref} from "vue";
     let urlImagen = ref();
     let chisteTexto;
-    let backendTexto;
 
     cambiarElementos();
     async function cambiarElementos()
@@ -46,29 +45,4 @@
       chisteTexto = datos.value;
       urlImagen.value = respuesta.url;
     }
-
-    async function agregarActivo()
-    {
-      let newActivo =    
-      {
-        id:1,
-        serie:5121,
-        tipo:"computadora",
-        desc:"Una computadora comun de oficina, con una carcasa negra carateristica.",
-        numInventario: 62,
-        ubicacion: "cubiculo",
-        responsable:"Oswaldo Aldo Poron",
-        imagen:"/Imagenes/computadora.png"
-      };
-
-      let info = await fetch("https://localhost:4000/activo/",
-      {method:"POST",
-      credentials: "include",
-      headers:{'Content-Type': 'application/json'},
-      body:JSON.stringify(newActivo)});
-      let datoBackend = await info.json();
-      backendTexto = JSON.stringify(datoBackend);
-      console.log(backendTexto);
-    }
-
     </script>
